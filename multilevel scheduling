@@ -1,5 +1,33 @@
-/*#include<stdio.h> 
- 
+//preemptive priority
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Process
+{
+    int pid,burstt,arrivalt,ppriority;
+
+}process;
+
+int main()
+{
+    process p[200];
+    int n,i;
+    printf("Enter no. of process\t");
+    scanf("%d",&n);
+    for(i =0;i<n;i++)
+    {
+        printf("Enter Process %d Burst Time, Arrival Time, Priority\n",i+1);
+        scanf("%d %d %d %d",&p[i].pid,&p[i].burstt,&p[i].arrivalt,&p[i].ppriority);
+    }
+    /*for(i=0;i<n;i++)
+    {
+        printf("Process pid:%d bursst:%d arrivalt:%d ppriority:%d\n",p[i].pid,p[i].burstt,p[i].arrivalt,p[i].ppriority);
+    }*/
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&+++++++++++++++++++++++++++++++++++++++++++
+
+/*#include<stdio.h>  
 int main() 
 { 
  
