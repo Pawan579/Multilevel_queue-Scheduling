@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<time.h>
 int n,i,j,total=0;
 typedef struct Process
 {
@@ -24,6 +23,17 @@ void Arrival_Time_Sorting()
                   }
             }
       }
+      int s;
+      for(s=0;s<n;s++)
+      {
+          //if two have same arrivaltime and next have higher priority
+          if(p[s].arrivalt==p[s+1].arrivalt&&p[s].ppriority<p[s+1].ppriority)
+            {
+                temp = p[s+1];
+                p[s+1] = p[s];
+                p[s] = temp;
+            }
+      }
 }
 void preemptive()
 {
@@ -31,8 +41,10 @@ void preemptive()
    while(t>0&&c!=0)
    {   int k=0;
         if (p[k].arrivalt < p[k+1].arrivalt)
-            p[k].burstt=p[k].burstt-1;
-            printf("Process %d is running"k+1);
+           {
+               p[k].burstt=p[k].burstt-1;
+               printf("Process %d is running",k+1);
+           }
 
         else if (p[k].arrivalt == p[k+1].arrivalt && p[k].ppriority > p[k+1].ppriority)
             p[k].burstt=p[k].burstt-1;
@@ -41,7 +53,7 @@ void preemptive()
            {
             ++t;
             for(a=k+1;a<n;a++)//checking if another process has come at that particular time
-            {if(p[a].arrivalt==t&&flag==0)
+            {if(p[a].arrivalt==t&&flag==0)//flag to check there is no two process with same arrival time donot alter k value
                {
                 if(p[a].ppriority > p[k].ppriority&&p[a].arrivalt > p[k].arrivalt)//if priority and arrival time both are same
                    {
