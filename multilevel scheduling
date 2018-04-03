@@ -1,27 +1,87 @@
-//preemptive priority
 #include <stdio.h>
 #include <stdlib.h>
-
+#include<time.h>
+int n,i,j,total=0;
 typedef struct Process
 {
-    int pid,burstt,arrivalt,ppriority;
+    int burstt,arrivalt,ppriority;
 
 }process;
+process p[200],q1[200],q2[200];//q1,q2 to store process in queue
+//arrival time sorting
+void Arrival_Time_Sorting()
+{
+      process temp;
+      for(i = 0; i < n - 1; i++)
+      {
+            for(j = i + 1; j < n; j++)
+            {
+                  if(p[i].arrivalt> p[j].arrivalt)
+                  {
+                        temp = p[i];
+                        p[i] = p[j];
+                        p[j] = temp;
+                  }
+            }
+      }
+}
+void preemptive()
+{
+    int t=0,c=n,a,flag=0;
+   while(t>0&&c!=0)
+   {   int k=0;
+        if (p[k].arrivalt < p[k+1].arrivalt)
+            p[k].burstt=p[k].burstt-1;
+            printf("Process %d is running"k+1);
+
+        else if (p[k].arrivalt == p[k+1].arrivalt && p[k].ppriority > p[k+1].ppriority)
+            p[k].burstt=p[k].burstt-1;
+
+        else
+           {
+            ++t;
+            for(a=k+1;a<n;a++)//checking if another process has come at that particular time
+            {if(p[a].arrivalt==t&&flag==0)
+               {
+                if(p[a].ppriority > p[k].ppriority&&p[a].arrivalt > p[k].arrivalt)//if priority and arrival time both are same
+                   {
+                       q2[k]=p[k];
+                       k++;
+                       c--;
+                       flag=1;
+                   }
+               }
+            }
+            flag=0;
+           }
+   }
+}
+void roundrobin()
+{
+
+}
 
 int main()
 {
-    process p[1000];
-    int n,i;
     printf("Enter no. of process\t");
     scanf("%d",&n);
     for(i =0;i<n;i++)
     {
-        printf("Enter Process %d Burst Time, Arrival Time, Priority\n",i+1);
-        scanf("%d %d %d %d",&p[i].pid,&p[i].burstt,&p[i].arrivalt,&p[i].ppriority);
+        printf("Enter Process %d: Burst Time, Arrival Time, Priority\n",i+1);
+        scanf("%d %d %d",&p[i].burstt,&p[i].arrivalt,&p[i].ppriority);
     }
+    Arrival_Time_Sorting();//arrival time sorting
     /*for(i=0;i<n;i++)
     {
-        printf("Process pid:%d bursst:%d arrivalt:%d ppriority:%d\n",p[i].pid,p[i].burstt,p[i].arrivalt,p[i].ppriority);
+        printf("Process %d: bursst %d arrivalt:%d ppriority:%d\n",i+1,p[i].burstt,p[i].arrivalt,p[i].ppriority);
     }*/
-}
+    for(i=0;i<n;i++)
+    {
+        q1[i]=p[i];
+    }
+    //total=q1[n-1].arrivalt;
 
+    preemptive();
+    roundrobin();
+
+}
