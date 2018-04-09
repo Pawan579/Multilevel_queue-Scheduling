@@ -53,7 +53,7 @@ void secondsort()
                         p[i] = p[j];
                         p[j] = temp1;
                   }
-                  if(q3[i].ppriority>q3[j].ppriority)
+                  if(q3[i].ppriority> q3[j].ppriority)
                   {
                         temp1 = q3[i];
                         q3[i] = q3[j];
@@ -69,6 +69,7 @@ void preemptive()
     t=p[0].arrivalt;
    while(t>=0&&c>0)
    {
+       //printf("We are at beginning of while loop\n");
         if (p[k].arrivalt < p[k+1].arrivalt&&p[k].burstt>0)
            {
                if(p[k].burstt==q3[k].burstt)
@@ -82,24 +83,23 @@ void preemptive()
                     q3[k].endt=t;
                 }
                 else if(p[k].burstt==0)
-                    {
-                        c--;
-                        q3[k].endt=t;
+                    {c--;
+                    q3[k].endt=t;
                     }
            }
 
-        else if (p[k].arrivalt == p[k+1].arrivalt && p[k].ppriority<p[k+1].ppriority&&p[k].burstt>0)
+        else if (p[k].arrivalt == p[k+1].arrivalt && p[k].ppriority < p[k+1].ppriority&&p[k].burstt>0)
                 {
+
                     if(p[k].burstt==q3[k].burstt)
                         q3[k].startt=t;
                     printf("Process P%d is Running at time %d with priority %d \n",p[k].pid,t,p[k].ppriority);
                     p[k].burstt=p[k].burstt-1;
                     if(p[k].burstt==0)
-                          {
-                              c--;
-                              q3[k].endt=t;
-                          }
-                    //printf("Process with same arrival time\n");
+                       {
+                          c--;
+                          q3[k].endt=t;
+                       }
                 }
         else if(k==n-1&&p[k].burstt>0)//since if 2 process is present then first will execute and last will be left out
             {
@@ -110,7 +110,6 @@ void preemptive()
                 if(p[k].burstt==0)
                  {c--;
                  q3[k].endt=t;
-                 //printf("value of c inside k= n-1 after burst=0 is %d \n",c);
                  }
                  if(c!=n-1&&c!=0&&p[k].burstt==0||(c==1&&p[k].burstt==0))//if processes are left due to lower priority but not preempted then here....
                  {
@@ -125,22 +124,20 @@ void preemptive()
                                 t++;
                                 if(p[l].burstt==q3[l].burstt)
                                         q3[l].startt=t;
-                                printf("Process %d is running at time %d with priority %d\n",p[i].pid,t,p[i].ppriority);
+                                printf("Process P%d is running at time %d with priority %d\n",p[i].pid,t,p[i].ppriority);
                                 p[l].burstt=p[l].burstt-1;
                                 if(p[l].burstt==0)
                                 {
                                     q3[l].endt=t;
-                                   c--;
+                                    c--;
                                 }
                             }
                             }
                         }
                         c=0;
                  }
-                 //printf("We are in last process\n");
             }
             else if(c!=0&&c!=n-1)//problem......in case when cpu is idle it will decrement c and increment k but i need help
-                //for when c!=0 && c!=n-1 to increment value of k
                 {
                     flag1=1;
                     roundrobin();
@@ -152,17 +149,12 @@ void preemptive()
                             t--;
                         }
                 }
-
-
-            //for preempting current process if required
             ++t;
-            //printf("value of t after ++t %d\n",t);
             for(a=k+1;a<n;a++)//checking if another process has come at that particular time
             {
                 if(p[a].arrivalt==t&&flag==0)//flag to check there is no two process with same arrival time donot alter k value
                {
-                   //printf("Process P%d has arrived at t %d\n",p[a].pid,t);
-                if(p[a].ppriority < p[k].ppriority&&p[a].arrivalt > p[k].arrivalt||(p[a].ppriority==p[k+1].ppriority||p[a].ppriority==p[k].ppriority)&&p[a].arrivalt>p[k+1].arrivalt||p[a].arrivalt>p[k].arrivalt)//if priority and arrival time both are same
+                if(p[a].ppriority < p[k].ppriority&&p[a].arrivalt > p[k].arrivalt||(p[a].ppriority==p[k+1].ppriority||p[a].ppriority==p[k].ppriority)&&p[a].arrivalt>p[k+1].arrivalt)//||p[a].arrivalt>p[k].arrivalt)//if priority and arrival time both are same
                    {
                        if(p[k].burstt>0)
                        {
@@ -182,7 +174,7 @@ void preemptive()
 //++++++++++++++++++++++++++++++++++++++&&&&&&&&&&&&&&&ROUND_ROBIN&&&&&&&&&&&&&+++++++++++++++++++++++++++++++++++++++++++++++++++
 void roundrobin()
 {
-    int f=0,f1=0,r1=0,x=r,w=0,flag2=0;
+    int f=0,f1=0,r1=0,d=0,d1=0,x=r,w=0,flag2=0;
     if(flag1==1)
      while(t>0&&x>0&&p[k+1].arrivalt>t&&flag2==0)
     {
@@ -197,7 +189,8 @@ void roundrobin()
                         {flag2==1;
                         t=p[k+1].arrivalt;
                             t--;
-                            goto b;}
+							goto b;
+							}
 
                     if(q1[r1].burstt==0)
                       {
@@ -209,12 +202,13 @@ void roundrobin()
                          x--;
                          if(x==0)
                             r--;
+                         //printf("value of r %d \n",x);
                       }
                     }
                     ++f;
                     if(f>=2)
                     {
-                        if(r1<x)
+                        if(r1<x)//less than x becz
                             ++r1;
                         else
                             r1=0;
@@ -235,15 +229,12 @@ void roundrobin()
                     t++;
                     if(q1[r1].burstt==0)
                     {
-
-                          for(w=0;w<n;w++)
+                         for(w=0;w<n;w++)
                           {
                               if(q3[w].pid==q1[r1].pid)
                                 q3[w].endt=t-1;
-                                //printf("value of endt %d \n",q3[w].endt);
                           }
-                       r--;//printf("value of r %d \n",r);
-
+                        r--;
                     }
                     }
                     ++f1;
@@ -270,7 +261,7 @@ int main()
     scanf("%d",&n);
     for(i =0;i<n;i++)
     {
-        y: fflush(stdin);
+    y: fflush(stdin);
         printf("Enter Process %d: \n",i);
         printf("Enter Burst Time In Multiples Of 2: (for e.g. 2,4...etc)\n");
         scanf("%d",&p[i].burstt);
@@ -281,6 +272,8 @@ int main()
         printf("Priority:\n");
         scanf("%d",&p[i].ppriority);
         p[i].pid=i;
+
+
     }
     Arrival_Time_Sorting();//arrival time sorting
     for(i=0;i<n;i++)
@@ -289,19 +282,13 @@ int main()
     }
      for(i=0;i<n;i++)
     {
-        printf("Process P%d: Bursst %d Arrivalt:%d Priority:%d and Process id P%d\n",i+1,p[i].burstt,p[i].arrivalt,p[i].ppriority,p[i].pid);
+        printf("Process P%d: Bursst %d Arrivalt:%d Ppriority:%d and Process id P%d\n",i+1,p[i].burstt,p[i].arrivalt,p[i].ppriority,p[i].pid);
     }
 
     preemptive();
-     /*for(i=0;i<n;i++)
-    {
-        printf("Process P%d: bursst %d arrivalt:%d ppriority:%d and proess id P%d\n",i+1,p[i].burstt,p[i].arrivalt,p[i].ppriority,p[i].pid);
-    }*/
-
-    /*for(i=0;i<r;i++)
-    {
-        printf("Process Q%d: bursst %d arrivalt:%d ppriority:%d and proess id P%d\n",i+1,q1[i].burstt,q1[i].arrivalt,q1[i].ppriority,q1[i].pid);
-    }*/
+    int x1=r;
+    flag1=0;
+    roundrobin();
     int z=0,totalburst;
     float turnaroundt,avgwaiting=0.0;
     for(z=0;z<n;z++)
@@ -313,14 +300,13 @@ int main()
     }
     printf("Average waiting time %f \n",avgwaiting/n);
     printf("Turnaround time %f \n",(avgwaiting/n)+totalburst);
-    //printf("Before last round robin\n");
-    int x1=r;
-    flag1=0;
-    roundrobin();
+
     /*for(i=0;i<x1;i++)
     {
         printf("Process Q%d: bursst %d arrivalt:%d ppriority:%d and proess id P%d\n",i+1,q1[i].burstt,q1[i].arrivalt,q1[i].ppriority,q1[i].pid);
-    }*/
+    }
     return 0;
+*/
 }
+
 
