@@ -300,13 +300,7 @@ int main()
     }
     printf("Average waiting time %f \n",avgwaiting/n);
     printf("Turnaround time %f \n",(avgwaiting/n)+totalburst);
-
-    /*for(i=0;i<x1;i++)
-    {
-        printf("Process Q%d: bursst %d arrivalt:%d ppriority:%d and proess id P%d\n",i+1,q1[i].burstt,q1[i].arrivalt,q1[i].ppriority,q1[i].pid);
-    }
     return 0;
-*/
 }
 
 
